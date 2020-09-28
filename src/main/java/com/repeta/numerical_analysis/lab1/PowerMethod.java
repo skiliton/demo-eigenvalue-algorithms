@@ -3,15 +3,16 @@ package com.repeta.numerical_analysis.lab1;
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 
-public class PowerMethod implements Function<SimpleMatrix,EigenSpace>
+public class PowerMethod implements Function<SimpleMatrix,List<EigenSpace>>
 {
     private static double THRESHOLD = 0.0001;
 
     @Override
-    public EigenSpace apply(SimpleMatrix A) {
+    public List<EigenSpace> apply(SimpleMatrix A) {
         SimpleMatrix y = new SimpleMatrix(A.numRows(),1);
         y.fill(1);
         SimpleMatrix x = new SimpleMatrix(y);
@@ -28,6 +29,8 @@ public class PowerMethod implements Function<SimpleMatrix,EigenSpace>
         double eigenVal = l1.elementSum()/l1.numRows();
         ArrayList<SimpleMatrix> eigenVecs = new ArrayList<>();
         eigenVecs.add(x);
-        return new EigenSpace(eigenVal,eigenVecs);
+        ArrayList<EigenSpace> eigenSpaces = new ArrayList<>();
+        eigenSpaces.add(new EigenSpace(eigenVal,eigenVecs));
+        return eigenSpaces;
     }
 }
