@@ -4,12 +4,7 @@ import org.ejml.simple.SimpleMatrix;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
@@ -21,8 +16,8 @@ public class App
                 { 184,   10, -588,  828,   -4},
                 {-383,    3, -239,   -4,  843}
         });
-
-        EigenvalueAlgorithm method = new JacobiMethod();
+        EigenvalueAlgorithmFactory algorithmFactory = new DemoEigenvalueAlgorithmFactory();
+        EigenvalueAlgorithm method = algorithmFactory.createAlgorithm(args[0]);
         Map<Double,List<SimpleMatrix>> eSpace = method.apply(A);
         System.out.print(eSpace.toString());
     }
