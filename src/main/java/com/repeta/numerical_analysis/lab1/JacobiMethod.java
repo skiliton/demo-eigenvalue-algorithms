@@ -25,17 +25,15 @@ public class JacobiMethod implements EigenvalueAlgorithm {
 
     @Override
     public Map<Double,List<SimpleMatrix>> apply(SimpleMatrix A) {
-        A.print();
         SimpleMatrix S = new SimpleMatrix(A);
         int n = A.numRows();
         SimpleMatrix GChain = SimpleMatrix.identity(n);
         ArrayList<Double> eValues;
         ArrayList<SimpleMatrix> eVectors;
-        double bias=0;
+        double bias;
 
         do{
             MatrixElement pivot = getMaxOffDiagonalElement(S);
-            System.out.println(pivot.val);
             SimpleMatrix G = createGivensRotationMatrix(S,pivot);
             GChain = GChain.mult(G);
             S = G.transpose().mult(S.mult(G));
@@ -46,7 +44,6 @@ public class JacobiMethod implements EigenvalueAlgorithm {
                 SimpleMatrix biasVec = A.mult(eVectors.get(i)).minus(eVectors.get(i).scale(eValues.get(i)));
                 bias+= biasVec.elementMaxAbs();
             };
-            System.out.println("bias = "+bias+"\n");
         }while (bias > n*EPS);
 
         Map<Double,List<SimpleMatrix>> res = new HashMap<>();
@@ -77,7 +74,6 @@ public class JacobiMethod implements EigenvalueAlgorithm {
         double c = Math.cos(fi);
         double s = Math.sin(fi);
         SimpleMatrix G = SimpleMatrix.identity(A.numRows());
-        System.out.println("s="+s+" c="+c);
         G.set(aij.i,aij.i,c);
         G.set(aij.j,aij.j,c);
         G.set(aij.i,aij.j,-s);
