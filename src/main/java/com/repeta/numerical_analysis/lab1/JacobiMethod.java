@@ -3,10 +3,11 @@ package com.repeta.numerical_analysis.lab1;
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Map;
 
-public class JacobiMethod implements Function<SimpleMatrix,List<EigenSpace>> {
+public class JacobiMethod implements EigenvalueAlgorithm {
 
     private static final double EPS = 0.0001;
 
@@ -23,7 +24,7 @@ public class JacobiMethod implements Function<SimpleMatrix,List<EigenSpace>> {
     }
 
     @Override
-    public List<EigenSpace> apply(SimpleMatrix A) {
+    public Map<Double,List<SimpleMatrix>> apply(SimpleMatrix A) {
         A.print();
         SimpleMatrix S = new SimpleMatrix(A);
         int n = A.numRows();
@@ -48,9 +49,9 @@ public class JacobiMethod implements Function<SimpleMatrix,List<EigenSpace>> {
             System.out.println("bias = "+bias+"\n");
         }while (bias > n*EPS);
 
-        ArrayList<EigenSpace> res = new ArrayList<>();
+        Map<Double,List<SimpleMatrix>> res = new HashMap<>();
         for (int i=0;i<n;i++){
-            res.add(new EigenSpace(eValues.get(i),eVectors.subList(i,i+1)));
+            res.put(eValues.get(i),eVectors.subList(i,i+1));
         }
         return res;
     }

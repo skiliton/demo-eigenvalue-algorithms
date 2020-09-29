@@ -3,34 +3,35 @@ package com.repeta.numerical_analysis.lab1;
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Map;
 
 
-public class PowerMethod implements Function<SimpleMatrix,List<EigenSpace>>
-{
+public class PowerMethod implements EigenvalueAlgorithm {
     private static double THRESHOLD = 0.0001;
 
     @Override
-    public List<EigenSpace> apply(SimpleMatrix A) {
+    public Map<Double,List<SimpleMatrix>> apply(SimpleMatrix A) {
         SimpleMatrix y = new SimpleMatrix(A.numRows(),1);
         y.fill(1);
         SimpleMatrix x = new SimpleMatrix(y);
         SimpleMatrix l1 = new SimpleMatrix(y);
         SimpleMatrix l0;
-        int k=0;
+
         do{
             l0=l1;
             y = A.mult(x);
             l1 = y.elementDiv(x);
             x = y.divide(y.normF());
-            k++;
         }while (l1.minus(l0).elementMaxAbs()>=THRESHOLD);
+
         double eigenVal = l1.elementSum()/l1.numRows();
-        ArrayList<SimpleMatrix> eigenVecs = new ArrayList<>();
+        List<SimpleMatrix> eigenVecs = new ArrayList<>();
         eigenVecs.add(x);
-        ArrayList<EigenSpace> eigenSpaces = new ArrayList<>();
-        eigenSpaces.add(new EigenSpace(eigenVal,eigenVecs));
-        return eigenSpaces;
+        Map<Double,List<SimpleMatrix>> res = new HashMap<>();
+        res.put(eigenVal,eigenVecs);
+
+        return res;
     }
 }

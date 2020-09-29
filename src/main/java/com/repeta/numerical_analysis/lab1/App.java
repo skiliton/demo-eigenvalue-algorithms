@@ -3,6 +3,7 @@ package com.repeta.numerical_analysis.lab1;
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -21,8 +22,8 @@ public class App
                 {-383,    3, -239,   -4,  843}
         });
 
-        Function<SimpleMatrix,List<EigenSpace>> method = new JacobiMethod();
-        List<EigenSpace> eSpace = method.apply(A);
+        EigenvalueAlgorithm method = new JacobiMethod();
+        Map<Double,List<SimpleMatrix>> eSpace = method.apply(A);
         System.out.print(eSpace.toString());
     }
 }
