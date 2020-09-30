@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.repeta.numerical_analysis.lab1.SimpleMatrixHelper.fetchColumnVectors;
+
 public class JacobiMethod implements EigenvalueAlgorithm {
 
     private static final double EPS = 0.0001;
@@ -37,8 +39,8 @@ public class JacobiMethod implements EigenvalueAlgorithm {
             SimpleMatrix G = createGivensRotationMatrix(S,pivot);
             GChain = GChain.mult(G);
             S = G.transpose().mult(S.mult(G));
-            eValues = fetchDiagonalValues(S);
-            eVectors = fetchColumnVectors(GChain);
+            eValues = SimpleMatrixHelper.fetchDiagonalValues(S);
+            eVectors = SimpleMatrixHelper.fetchColumnVectors(GChain);
             bias=0;
             for(int i=0; i<n; i++){
                 SimpleMatrix biasVec = A.mult(eVectors.get(i)).minus(eVectors.get(i).scale(eValues.get(i)));
@@ -49,22 +51,6 @@ public class JacobiMethod implements EigenvalueAlgorithm {
         Map<Double,List<SimpleMatrix>> res = new HashMap<>();
         for (int i=0;i<n;i++){
             res.put(eValues.get(i),eVectors.subList(i,i+1));
-        }
-        return res;
-    }
-
-    private ArrayList<SimpleMatrix> fetchColumnVectors(SimpleMatrix A){
-        ArrayList<SimpleMatrix> res= new ArrayList<>();
-        for (int i=0;i<A.numRows();i++){
-            res.add(A.extractVector(false,i));
-        }
-        return res;
-    }
-
-    private ArrayList<Double> fetchDiagonalValues(SimpleMatrix A){
-        ArrayList<Double> res= new ArrayList<>();
-        for (int i=0;i<A.numRows();i++){
-            res.add(A.get(i,i));
         }
         return res;
     }
