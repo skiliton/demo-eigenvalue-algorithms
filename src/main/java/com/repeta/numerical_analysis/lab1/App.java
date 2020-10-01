@@ -9,6 +9,7 @@ public class App
 {
     public static void main( String[] args )
     {
+        System.out.println(args[0]);
         SimpleMatrix A = new SimpleMatrix(new double[][]{
                 { 818, -287, -162,  184, -383},
                 {-287,  718, -161,   10,    3},

@@ -4,6 +4,7 @@ public class DemoEigenvalueAlgorithmFactory implements EigenvalueAlgorithmFactor
 
     private static final String JACOBI_METHOD = "jacobi";
     private static final String POWER_METHOD = "power";
+    private static final String QR_METHOD = "qr";
 
     @Override
     public EigenvalueAlgorithm createAlgorithm(String type) {
@@ -12,6 +13,9 @@ public class DemoEigenvalueAlgorithmFactory implements EigenvalueAlgorithmFactor
         }
         if(type.equals(POWER_METHOD)){
             return new PowerMethod();
+        }
+        if(type.equals(QR_METHOD)){
+            return new QRMethod();
         }
         return null;
     }
