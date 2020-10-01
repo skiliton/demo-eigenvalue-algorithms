@@ -1,4 +1,4 @@
-package com.repeta.numerical_analysis.lab1;
+package com.repeta.numerical_analysis.lab1.matrix;
 
 import org.ejml.simple.SimpleMatrix;
 
