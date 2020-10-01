@@ -1,5 +1,6 @@
-package com.repeta.numerical_analysis.lab1;
+package com.repeta.numerical_analysis.lab1.eigenvalue;
 
+import com.repeta.numerical_analysis.lab1.SimpleMatrixHelper;
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.ArrayList;

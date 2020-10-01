@@ -1,5 +1,8 @@
 package com.repeta.numerical_analysis.lab1;
 
+import com.repeta.numerical_analysis.lab1.eigenvalue.DemoEigenvalueAlgorithmFactory;
+import com.repeta.numerical_analysis.lab1.eigenvalue.EigenvalueAlgorithm;
+import com.repeta.numerical_analysis.lab1.eigenvalue.EigenvalueAlgorithmFactory;
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.List;

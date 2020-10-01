@@ -1,4 +1,4 @@
-package com.repeta.numerical_analysis.lab1;
+package com.repeta.numerical_analysis.lab1.eigenvalue;
 
 public class DemoEigenvalueAlgorithmFactory implements EigenvalueAlgorithmFactory {
 
