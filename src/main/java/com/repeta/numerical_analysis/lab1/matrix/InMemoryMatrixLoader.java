@@ -1,9 +1,9 @@
 package com.repeta.numerical_analysis.lab1.matrix;
 
-public class InMemoryMatrixLoader {
+public class InMemoryMatrixLoader extends MatrixLoader{
     public static final String MTRX1 = "t1-m20";
     public static final String MTRX2 = "t2-m20";
-    public double[][] load(String matrix){
+    public double[][] loadMatrix(String matrix){
         if(matrix.equals(MTRX1)){
             return new double[][]{
                     { 818, -287, -162,  184, -383},
