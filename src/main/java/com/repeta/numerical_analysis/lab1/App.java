@@ -7,6 +7,8 @@ import com.repeta.numerical_analysis.lab1.eigenvalue.EigenvalueAlgorithmFactory.
 import com.repeta.numerical_analysis.lab1.matrix.CSVMatrixLoader;
 import com.repeta.numerical_analysis.lab1.matrix.InMemoryMatrixLoader;
 import com.repeta.numerical_analysis.lab1.matrix.MatrixLoader;
+import com.repeta.numerical_analysis.lab1.output.*;
+import com.repeta.numerical_analysis.lab1.output.EigenSpaceEncoderFactory.Mode;
 import org.ejml.simple.SimpleMatrix;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -28,8 +30,11 @@ public class App implements Callable<Integer>
     @Parameters(index = "0", paramLabel = "MATRIX", description = "matrix filename or name of internal in-memory matrix")
     private String matrixName;
 
-    @Option(names = {"-a","-algorithm"}, description = "Valid values: ${COMPLETION-CANDIDATES}")
+    @Option(names = {"-a","-algorithm"}, description = "type of algorithm to be used, valid values: ${COMPLETION-CANDIDATES}")
     private Algorithm algorithm;
+
+    @Option(names = {"-o","-output"}, description = "output format, valid values: ${COMPLETION-CANDIDATES}")
+    private Mode outputFormat;
 
     public static void main( String[] args )
     {
@@ -39,9 +44,7 @@ public class App implements Callable<Integer>
 
     @Override
     public Integer call() throws Exception {
-        MatrixLoader matrixLoader = new InMemoryMatrixLoader();
-        MatrixLoader csvMatrixLoader = new CSVMatrixLoader();
-        matrixLoader.setNext(csvMatrixLoader);
+        MatrixLoader matrixLoader = (new InMemoryMatrixLoader()).setNext(new CSVMatrixLoader());
         double[][] matrix = matrixLoader.load(matrixName);
         if (matrix==null){
             System.out.println("Cannot find matrix "+matrixName);
@@ -50,12 +53,10 @@ public class App implements Callable<Integer>
         SimpleMatrix A = new SimpleMatrix(matrix);
         EigenvalueAlgorithmFactory algorithmFactory = new DemoEigenvalueAlgorithmFactory();
         EigenvalueAlgorithm method = algorithmFactory.createAlgorithm(algorithm);
-        System.out.println("Algorithm: "+algorithm);
-        System.out.println("Matrix: "+matrixName);
-        A.print();
-        Map<Double,List<SimpleMatrix>> eSpace = method.apply(A);
-        System.out.println("----------RESULT----------");
-        System.out.print(eSpace.toString());
+        Map<Double,List<SimpleMatrix>> eSpaces = method.apply(A);
+        EigenSpaceEncoderFactory encoderFactory = new DemoEigenSpaceEncoderFactory();
+        EigenSpaceEncoder encoder = encoderFactory.createEncoder(outputFormat);
+        System.out.print(encoder.encode(eSpaces));
         return 0;
     }
 }
