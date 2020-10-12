@@ -8,9 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QRMethod implements EigenvalueAlgorithm {
-
-    private static double EPS = 0.0001;
+public class QRMethod extends EigenvalueAlgorithm {
 
     private class QRDecomposition{
         private SimpleMatrix Q;
@@ -45,7 +43,7 @@ public class QRMethod implements EigenvalueAlgorithm {
             Q = QR.getQ(); R = QR.getR();
             QChain = QChain.mult(Q).negative();
             A = R.mult(Q);
-        }while (A.minus(Ap).elementMaxAbs()>EPS);
+        }while (A.minus(Ap).elementMaxAbs()>eps);
         eValues = SimpleMatrixHelper.fetchDiagonalValues(R.negative());
         eVectors = SimpleMatrixHelper.fetchColumnVectors(QChain);
         Map<Double,List<SimpleMatrix>> res = new HashMap<>();

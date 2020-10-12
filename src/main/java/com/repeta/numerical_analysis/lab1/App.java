@@ -30,11 +30,14 @@ public class App implements Callable<Integer>
     @Parameters(index = "0", paramLabel = "MATRIX", description = "matrix filename or name of internal in-memory matrix")
     private String matrixName;
 
-    @Option(names = {"-a","-algorithm"}, description = "type of algorithm to be used, valid values: ${COMPLETION-CANDIDATES}")
-    private Algorithm algorithm;
+    @Option(names = {"-a","-algorithmName"}, description = "type of algorithmName to be used, valid values: ${COMPLETION-CANDIDATES}")
+    private Algorithm algorithmName;
 
     @Option(names = {"-o","-output"}, description = "output format, valid values: ${COMPLETION-CANDIDATES}")
     private Mode outputFormat;
+
+    @Option(names = {"-e","-eps"}, description = "Threshold value for algorithms")
+    private double eps;
 
     public static void main( String[] args )
     {
@@ -52,8 +55,9 @@ public class App implements Callable<Integer>
         }
         SimpleMatrix A = new SimpleMatrix(matrix);
         EigenvalueAlgorithmFactory algorithmFactory = new DemoEigenvalueAlgorithmFactory();
-        EigenvalueAlgorithm method = algorithmFactory.createAlgorithm(algorithm);
-        Map<Double,List<SimpleMatrix>> eSpaces = method.apply(A);
+        EigenvalueAlgorithm algorithm = algorithmFactory.createAlgorithm(algorithmName);
+        algorithm.setEps(eps);
+        Map<Double,List<SimpleMatrix>> eSpaces = algorithm.apply(A);
         EigenSpaceEncoderFactory encoderFactory = new DemoEigenSpaceEncoderFactory();
         EigenSpaceEncoder encoder = encoderFactory.createEncoder(outputFormat);
         System.out.print(encoder.encode(eSpaces));
