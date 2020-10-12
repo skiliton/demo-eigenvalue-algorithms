@@ -5,19 +5,28 @@ import com.repeta.numerical_analysis.lab1.eigenvalue.EigenvalueAlgorithm;
 import com.repeta.numerical_analysis.lab1.eigenvalue.EigenvalueAlgorithmFactory;
 import com.repeta.numerical_analysis.lab1.eigenvalue.EigenvalueAlgorithmFactory.Algorithm;
 import com.repeta.numerical_analysis.lab1.matrix.CSVMatrixLoader;
-import com.repeta.numerical_analysis.lab1.matrix.InMemoryMatrixLoader;
 import com.repeta.numerical_analysis.lab1.matrix.MatrixLoader;
 import com.repeta.numerical_analysis.lab1.output.*;
 import com.repeta.numerical_analysis.lab1.output.EigenSpaceEncoderFactory.Mode;
 import org.ejml.simple.SimpleMatrix;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
-
+import picocli.CommandLine.Spec;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
+
+import static picocli.CommandLine.*;
 
 @Command(
     name = "evd",
@@ -27,16 +36,36 @@ import java.util.concurrent.Callable;
 )
 public class App implements Callable<Integer>
 {
-    @Parameters(index = "0", paramLabel = "MATRIX", description = "matrix filename or name of internal in-memory matrix")
+    @Spec CommandSpec spec;
+
+    @Parameters(
+        index = "0",
+        paramLabel = "<matrix>",
+        description = "matrix filename matrix"
+    )
+    @Pattern(regexp = "^(.+)\\/([^/]+)$", message = "Invalid matrix filepath")
     private String matrixName;
 
-    @Option(names = {"-a","-algorithmName"}, description = "type of algorithmName to be used, valid values: ${COMPLETION-CANDIDATES}")
+    @Option(
+        names = {"-a","-algorithmName"},
+        required = true,
+        description = "type of algorithmName to be used, valid values: ${COMPLETION-CANDIDATES}"
+    )
     private Algorithm algorithmName;
 
-    @Option(names = {"-o","-output"}, description = "output format, valid values: ${COMPLETION-CANDIDATES}")
-    private Mode outputFormat;
+    @Option(
+        names = {"-o","-output"},
+        defaultValue = "TEXT",
+        description = "output format, valid values: ${COMPLETION-CANDIDATES}. By default option is set to ${DEFAULT-VALUE}"
+    )
+    private Mode outputFormat = Mode.TEXT;
 
-    @Option(names = {"-e","-eps"}, description = "Threshold value for algorithms")
+    @Option(
+        names = {"-e","-eps"},
+        defaultValue = "0.0001",
+        description = "Threshold value for algorithms by default is set to ${DEFAULT-VALUE}"
+    )
+    @Positive(message = "Value of epsilon must be greater than 0")
     private double eps;
 
     public static void main( String[] args )
@@ -47,11 +76,14 @@ public class App implements Callable<Integer>
 
     @Override
     public Integer call() throws Exception {
-        MatrixLoader matrixLoader = (new InMemoryMatrixLoader()).setNext(new CSVMatrixLoader());
+        validate();
+        MatrixLoader matrixLoader = new CSVMatrixLoader();
         double[][] matrix = matrixLoader.load(matrixName);
         if (matrix==null){
-            System.out.println("Cannot find matrix "+matrixName);
-            return 128;
+            throw new ParameterException(
+                spec.commandLine(),
+                String.format("Invalid value '%s' for parameter 'MATRIX': matrix cannot be loaded",matrixName)
+            );
         }
         SimpleMatrix A = new SimpleMatrix(matrix);
         EigenvalueAlgorithmFactory algorithmFactory = new DemoEigenvalueAlgorithmFactory();
@@ -62,5 +94,22 @@ public class App implements Callable<Integer>
         EigenSpaceEncoder encoder = encoderFactory.createEncoder(outputFormat);
         System.out.print(encoder.encode(eSpaces));
         return 0;
+    }
+
+    private void validate() {
+        System.out.println(spec.commandLine().getParseResult().originalArgs());
+        System.out.println(this);
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<App>> violations = validator.validate(this);
+
+        if (!violations.isEmpty()) {
+            StringBuilder errorMsg = new StringBuilder();
+            for (ConstraintViolation<App> violation : violations) {
+                errorMsg.append("ERROR: ").append(violation.getMessage()).append("\n");
+            }
+            throw new ParameterException(spec.commandLine(), errorMsg.toString());
+        }
     }
 }
