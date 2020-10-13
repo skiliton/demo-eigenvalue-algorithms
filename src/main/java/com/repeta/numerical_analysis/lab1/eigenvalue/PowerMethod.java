@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class PowerMethod implements EigenvalueAlgorithm {
-    private static double THRESHOLD = 0.0001;
+public class PowerMethod extends EigenvalueAlgorithm {
 
     @Override
     public Map<Double,List<SimpleMatrix>> apply(SimpleMatrix A) {
@@ -24,7 +23,7 @@ public class PowerMethod implements EigenvalueAlgorithm {
             y = A.mult(x);
             l1 = y.elementDiv(x);
             x = y.divide(y.normF());
-        }while (l1.minus(l0).elementMaxAbs()>=THRESHOLD);
+        }while (l1.minus(l0).elementMaxAbs()>=eps);
 
         double eigenVal = l1.elementSum()/l1.numRows();
         List<SimpleMatrix> eigenVecs = new ArrayList<>();

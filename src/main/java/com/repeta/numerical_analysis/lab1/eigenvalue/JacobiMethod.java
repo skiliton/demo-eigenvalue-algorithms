@@ -8,9 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JacobiMethod implements EigenvalueAlgorithm {
-
-    private static final double EPS = 0.0001;
+public class JacobiMethod extends EigenvalueAlgorithm {
 
     private class MatrixElement {
         public double val;
@@ -45,7 +43,7 @@ public class JacobiMethod implements EigenvalueAlgorithm {
                 SimpleMatrix biasVec = A.mult(eVectors.get(i)).minus(eVectors.get(i).scale(eValues.get(i)));
                 bias+= biasVec.elementMaxAbs();
             };
-        }while (bias > n*EPS);
+        }while (bias > n*eps);
 
         Map<Double,List<SimpleMatrix>> res = new HashMap<>();
         for (int i=0;i<n;i++){
