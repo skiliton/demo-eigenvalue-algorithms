@@ -49,7 +49,7 @@ public class App implements Callable<Integer>
     @Option(
         names = {"-a","-algorithmName"},
         required = true,
-        description = "type of algorithmName to be used, valid values: ${COMPLETION-CANDIDATES}"
+        description = "type of algorithm to be used, valid values: ${COMPLETION-CANDIDATES}"
     )
     private Algorithm algorithmName;
 
