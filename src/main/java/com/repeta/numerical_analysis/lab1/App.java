@@ -92,14 +92,11 @@ public class App implements Callable<Integer>
         Map<Double,List<SimpleMatrix>> eSpaces = algorithm.apply(A);
         EigenSpaceEncoderFactory encoderFactory = new DemoEigenSpaceEncoderFactory();
         EigenSpaceEncoder encoder = encoderFactory.createEncoder(outputFormat);
-        System.out.print(encoder.encode(eSpaces));
+        System.out.println(encoder.encode(eSpaces));
         return 0;
     }
 
     private void validate() {
-        System.out.println(spec.commandLine().getParseResult().originalArgs());
-        System.out.println(this);
-
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<App>> violations = validator.validate(this);
