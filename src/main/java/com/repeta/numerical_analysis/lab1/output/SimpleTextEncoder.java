@@ -8,6 +8,6 @@ import java.util.Map;
 public class SimpleTextEncoder implements EigenSpaceEncoder {
     @Override
     public String encode(Map<Double, List<SimpleMatrix>> eSpace) {
-        return eSpace.toString();
+        return eSpace.toString()+"\n";
     }
 }

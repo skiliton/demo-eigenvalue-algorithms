@@ -92,7 +92,7 @@ public class App implements Callable<Integer>
         Map<Double,List<SimpleMatrix>> eSpaces = algorithm.apply(A);
         EigenSpaceEncoderFactory encoderFactory = new DemoEigenSpaceEncoderFactory();
         EigenSpaceEncoder encoder = encoderFactory.createEncoder(outputFormat);
-        System.out.println(encoder.encode(eSpaces));
+        System.out.print(encoder.encode(eSpaces));
         return 0;
     }
 
