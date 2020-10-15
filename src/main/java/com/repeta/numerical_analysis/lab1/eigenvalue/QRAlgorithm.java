@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QRMethod extends EigenvalueAlgorithm {
+public class QRAlgorithm extends EigenvalueAlgorithm {
 
     private class QRDecomposition{
         private SimpleMatrix Q;

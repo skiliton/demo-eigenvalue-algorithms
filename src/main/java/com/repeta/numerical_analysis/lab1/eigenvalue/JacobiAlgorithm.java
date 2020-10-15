@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JacobiMethod extends EigenvalueAlgorithm {
+public class JacobiAlgorithm extends EigenvalueAlgorithm {
 
     private class MatrixElement {
         public double val;

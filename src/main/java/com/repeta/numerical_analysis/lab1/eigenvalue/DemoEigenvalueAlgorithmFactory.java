@@ -6,11 +6,11 @@ public class DemoEigenvalueAlgorithmFactory implements EigenvalueAlgorithmFactor
     public EigenvalueAlgorithm createAlgorithm(Algorithm type) {
         switch (type){
             case QR:
-                return new QRMethod();
+                return new QRAlgorithm();
             case JACOBI:
-                return new JacobiMethod();
+                return new JacobiAlgorithm();
             case POWER_ITERATION:
-                return new PowerMethod();
+                return new PowerIteration();
             default:
                 return null;
         }

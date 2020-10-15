@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class PowerMethod extends EigenvalueAlgorithm {
+public class PowerIteration extends EigenvalueAlgorithm {
 
     @Override
     public Map<Double,List<SimpleMatrix>> apply(SimpleMatrix A) {
