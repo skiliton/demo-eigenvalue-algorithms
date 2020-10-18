@@ -3,6 +3,7 @@ Simple command line app to experiment with matrixes by finding its eigenvalues a
 
 ## Table of contents
 * [General info](#general-info)
+* [Warning](#warning)
 * [Technologies](#technologies)
 * [Features](#features)
 * [Setup](#setup)
@@ -16,12 +17,20 @@ and to further practice developing CLI command. The main goals of this project a
 from being a univercity lab are impoving skills and gaining knowlage related to OOP design, 
 writing git commit messages, command line program development using Picocli framework.
 
+## Warning
+This project intended for demonstration purposes only. This recommendation is based on a fact
+that there are a lot of inefficencies related to algorithm implementation.
+
 ## Technologies
 Project is created with:
 * Java 8
 * EJML library version: 0.39
 * Picocli framework version: 4.5.1
 * Hibernate Validator library version: 6.0.2.Final
+* Apache Commons Configuration 2 library version: 2.7
+
+Project is tested with:
+* JUnit 5
 
 ## Features
 * Input matrix in CSV
