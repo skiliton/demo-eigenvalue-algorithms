@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import static com.repeta.numerical_analysis.lab1.ConfigurationSingleton.getConfiguration;
 import static picocli.CommandLine.*;
 
 @Command(
@@ -66,7 +67,7 @@ public class App implements Callable<Integer>
         description = "Threshold value for algorithms by default is set to ${DEFAULT-VALUE}"
     )
     @Positive(message = "Value of epsilon must be greater than 0")
-    private double eps;
+    private double eps = getConfiguration().getDouble("algorithm.default-eps");
 
     public static void main( String[] args )
     {
@@ -92,7 +93,7 @@ public class App implements Callable<Integer>
         Map<Double,List<SimpleMatrix>> eSpaces = algorithm.apply(A);
         EigenSpaceEncoderFactory encoderFactory = new DemoEigenSpaceEncoderFactory();
         EigenSpaceEncoder encoder = encoderFactory.createEncoder(outputFormat);
-        System.out.println(encoder.encode(eSpaces));
+        System.out.print(encoder.encode(eSpaces));
         return 0;
     }
 

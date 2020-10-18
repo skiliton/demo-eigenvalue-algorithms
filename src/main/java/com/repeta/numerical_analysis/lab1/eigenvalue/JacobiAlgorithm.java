@@ -8,43 +8,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JacobiMethod extends EigenvalueAlgorithm {
+public class JacobiAlgorithm extends EigenvalueAlgorithm {
 
-    private class MatrixElement {
-        public double val;
-        public int i;
-        public int j;
+    private int n;
+    private SimpleMatrix S;
+    private SimpleMatrix GChain;
 
-        public MatrixElement(double val, int i, int j) {
-            this.val = val;
-            this.i = i;
-            this.j = j;
-        }
+    @Override
+    protected void init(SimpleMatrix A) {
+        this.n = A.numRows();
+        S = new SimpleMatrix(A);
+        GChain = SimpleMatrix.identity(n);
     }
 
     @Override
-    public Map<Double,List<SimpleMatrix>> apply(SimpleMatrix A) {
-        SimpleMatrix S = new SimpleMatrix(A);
-        int n = A.numRows();
-        SimpleMatrix GChain = SimpleMatrix.identity(n);
-        ArrayList<Double> eValues;
-        ArrayList<SimpleMatrix> eVectors;
-        double bias;
+    protected void iteration() {
+        MatrixElement pivot = getMaxOffDiagonalElement(S);
+        SimpleMatrix G = createGivensRotationMatrix(S,pivot);
+        GChain = GChain.mult(G);
+        S = G.transpose().mult(S.mult(G));
+    }
 
-        do{
-            MatrixElement pivot = getMaxOffDiagonalElement(S);
-            SimpleMatrix G = createGivensRotationMatrix(S,pivot);
-            GChain = GChain.mult(G);
-            S = G.transpose().mult(S.mult(G));
-            eValues = SimpleMatrixHelper.fetchDiagonalValues(S);
-            eVectors = SimpleMatrixHelper.fetchColumnVectors(GChain);
-            bias=0;
-            for(int i=0; i<n; i++){
-                SimpleMatrix biasVec = A.mult(eVectors.get(i)).minus(eVectors.get(i).scale(eValues.get(i)));
-                bias+= biasVec.elementMaxAbs();
-            };
-        }while (bias > n*eps);
-
+    @Override
+    protected Map<Double, List<SimpleMatrix>> createEigenSpaces() {
+        ArrayList<Double> eValues = SimpleMatrixHelper.fetchDiagonalValues(S);
+        ArrayList<SimpleMatrix> eVectors = SimpleMatrixHelper.fetchColumnVectors(GChain);
         Map<Double,List<SimpleMatrix>> res = new HashMap<>();
         for (int i=0;i<n;i++){
             res.put(eValues.get(i),eVectors.subList(i,i+1));
@@ -75,5 +63,17 @@ public class JacobiMethod extends EigenvalueAlgorithm {
             }
         }
         return aij;
+    }
+
+    private class MatrixElement {
+        public double val;
+        public int i;
+        public int j;
+
+        public MatrixElement(double val, int i, int j) {
+            this.val = val;
+            this.i = i;
+            this.j = j;
+        }
     }
 }
