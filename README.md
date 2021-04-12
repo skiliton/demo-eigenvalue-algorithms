@@ -1,5 +1,5 @@
 # Eigenvalue algorithms demo
-Simple command line app to experiment with matrixes by finding its eigenvalues and eigen vectors
+Simple command-line app to experiment with matrixes by finding its eigenvalues and eigenvectors
 
 ## Table of contents
 * [General info](#general-info)
@@ -10,16 +10,15 @@ Simple command line app to experiment with matrixes by finding its eigenvalues a
 * [Invocation Example](#invocation-example)
 
 ## General info
-At the start this project was intended to be a university lab with main purpose of 
-finding eigenvalues and eigenvectors for two fixed matrixes. Additional features like
-support for CSV martrix input was added to increase overall usability of the program
+At the start, this project was intended to be a university lab with the main purpose of finding eigenvalues and eigenvectors for two fixed matrixes. Additional features like
+support for CSV matrix input was added to increase the overall usability of the program
 and to further practice developing CLI command. The main goals of this project apart 
-from being a univercity lab are impoving skills and gaining knowlage related to OOP design, 
-writing git commit messages, command line program development using Picocli framework.
+from being a university lab are improving skills and gaining knowledge related to OOP design, 
+writing git commit messages, command-line program development using Picocli framework.
 
 ## Warning
-This project intended for demonstration purposes only. This recommendation is based on a fact
-that there are a lot of inefficencies related to algorithm implementation.
+This project is intended for demonstration purposes only. This recommendation is based on a fact
+that there are a lot of inefficiencies related to algorithm implementation.
 
 ## Technologies
 Project is created with:
@@ -38,7 +37,7 @@ Project is tested with:
 * Support for 3 different algorithms: QR, Jacobi, Power iterations
 
 ## Setup
-To run this project, build it using Apache Maven version 3.3.9 or higher and add alias to simplify command invocation:
+To run this project, build it using Apache Maven version 3.3.9 or higher and add an alias to simplify command invocation:
 
 ```
 $ cd ../demo-eigenvalue-algorithms
@@ -47,7 +46,7 @@ $ alias evad='java -jar "target/eigenvalue-algorithms-demo-1.0-SNAPSHOT-jar-with
 ```
 
 ## Invocation Example
-In this example we are trying to find eigenvalues and eigenvectors for a given matrix
+In this example, we are trying to find eigenvalues and eigenvectors for a given matrix
 
 ```
 $ cat matrix.csv
